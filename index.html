@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Réseaux Sociaux</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+        }
+        .language-buttons, .social-links {
+            margin-top: 50px;
+        }
+        .language-buttons button {
+            padding: 15px 25px;
+            margin: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            background: white;
+            color: black;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .language-buttons button:hover {
+            background: #ddd;
+            transform: scale(1.1);
+        }
+        .language-buttons img {
+            width: 30px;
+            height: 20px;
+        }
+        .social-links {
+            display: none;
+        }
+        .social-links a {
+            display: block;
+            margin: 20px;
+            font-size: 24px;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Choisissez votre langue</h1>
+    <div class="language-buttons">
+        <button onclick="setLanguage('fr')">
+            <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="Français"> Français
+        </button>
+        <button onclick="setLanguage('bg')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" alt="Български"> Български
+        </button>
+        <button onclick="setLanguage('tr')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" alt="Türkçe"> Türkçe
+        </button>
+    </div>
+    <div class="social-links" id="social-links">
+        <h2 id="follow-text">Suivez-moi :</h2>
+        <a href="https://www.tiktok.com/@miz.r" target="_blank">📱 TikTok</a>
+        <a href="https://www.instagram.com/mz.serro" target="_blank">📸 Instagram</a>
+    </div>
+    <script>
+        function setLanguage(lang) {
+            const texts = {
+                fr: { title: "Mes Réseaux Sociaux", follow: "Suivez-moi :" },
+                bg: { title: "Моите социални мрежи", follow: "Последвайте ме:" },
+                tr: { title: "Sosyal Medya Hesaplarım", follow: "Beni takip edin:" }
+            };
+            document.getElementById("title").innerText = texts[lang].title;
+            document.getElementById("follow-text").innerText = texts[lang].follow;
+            document.querySelector(".language-buttons").style.display = "none";
+            document.getElementById("social-links").style.display = "block";
+        }
+    </script>
+</body>
+</html>
