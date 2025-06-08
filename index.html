@@ -3,82 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Réseaux Sociaux</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(to right, #ff9966, #ff5e62);
-            color: white;
-        }
-        .language-buttons, .social-links {
-            margin-top: 50px;
-        }
-        .language-buttons button {
-            padding: 15px 25px;
-            margin: 15px;
-            font-size: 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 15px;
-            background: white;
-            color: black;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .language-buttons button:hover {
-            background: #ddd;
-            transform: scale(1.1);
-        }
-        .language-buttons img {
-            width: 30px;
-            height: 20px;
-        }
-        .social-links {
-            display: none;
-        }
-        .social-links a {
-            display: block;
-            margin: 20px;
-            font-size: 24px;
-            text-decoration: none;
-            color: white;
-        }
-    </style>
+    <title>Mon Cœur, Ma Sarah</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1 id="title">Choisissez votre langue</h1>
-    <div class="language-buttons">
-        <button onclick="setLanguage('fr')">
-            <img src="https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg" alt="Français"> Français
-        </button>
-        <button onclick="setLanguage('bg')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" alt="Български"> Български
-        </button>
-        <button onclick="setLanguage('tr')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" alt="Türkçe"> Türkçe
-        </button>
+    <div class="container">
+        <div id="question1-section" class="card active">
+            <i class="fas fa-heart initial-heart"></i>
+            <h1>Es-tu ma Sarah, l'amour de ma vie ?</h1>
+            <div class="buttons">
+                <button id="btnYes1" class="btn">Oui, mon cœur</button>
+                <button id="btnNo1" class="btn">Non, pas moi</button>
+            </div>
+        </div>
+
+        <div id="password-section" class="card hidden">
+            <i class="fas fa-key"></i>
+            <h1>Un petit secret... Quelle est la date de naissance de Seray ?</h1>
+            <p class="hint">(Format : JJ/MM/AAAA)</p>
+            <input type="text" id="passwordInput" class="password-input" placeholder="JJ/MM/AAAA">
+            <button id="btnSubmitPassword" class="btn">Vérifier l'amour</button>
+        </div>
+
+        <div id="question2-section" class="card hidden">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h1>Mon amour, est-ce que tu m'aimes de tout ton cœur ?</h1>
+            <div class="buttons">
+                <button id="btnYes2" class="btn">Oui, je t'aime !</button>
+                <button id="btnNo2" class="btn">Non, pas encore</button>
+            </div>
+        </div>
+
+        <div id="final-message-section" class="card hidden">
+            <p id="final-text-content"></p>
+            <button id="restartBtn" class="btn hidden"><i class="fas fa-redo"></i> Recommencer</button>
+        </div>
     </div>
-    <div class="social-links" id="social-links">
-        <h2 id="follow-text">Suivez-moi :</h2>
-        <a href="https://www.tiktok.com/@miz.r" target="_blank">📱 TikTok</a>
-        <a href="https://www.instagram.com/mz.serro" target="_blank">📸 Instagram</a>
+
+    <div class="hearts-background">
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
     </div>
+
     <script>
-        function setLanguage(lang) {
-            const texts = {
-                fr: { title: "Mes Réseaux Sociaux", follow: "Suivez-moi :" },
-                bg: { title: "Моите социални мрежи", follow: "Последвайте ме:" },
-                tr: { title: "Sosyal Medya Hesaplarım", follow: "Beni takip edin:" }
-            };
-            document.getElementById("title").innerText = texts[lang].title;
-            document.getElementById("follow-text").innerText = texts[lang].follow;
-            document.querySelector(".language-buttons").style.display = "none";
-            document.getElementById("social-links").style.display = "block";
+        const question1Section = document.getElementById('question1-section');
+        const passwordSection = document.getElementById('password-section');
+        const question2Section = document.getElementById('question2-section');
+        const finalMessageSection = document.getElementById('final-message-section'); // Section finale unique
+        const finalTextContent = document.getElementById('final-text-content'); // Contenu du texte final
+        const restartBtn = document.getElementById('restartBtn');
+
+        const btnYes1 = document.getElementById('btnYes1');
+        const btnNo1 = document.getElementById('btnNo1');
+        const passwordInput = document.getElementById('passwordInput');
+        const btnSubmitPassword = document.getElementById('btnSubmitPassword');
+        const btnYes2 = document.getElementById('btnYes2');
+        const btnNo2 = document.getElementById('btnNo2');
+
+        const correctPassword = "22/10/2007"; // Le mot de passe attendu
+
+        // Le texte d'amour complet que tu as fourni
+        const fullPositiveMessage = `
+            <i class='fas fa-heartbeat heart-beat'></i> 
+            <p><strong>Mon amour, ma Sarah, depuis le jour où nos chemins se sont croisés, chaque instant avec toi est un pur bonheur.</strong> Tu es la lumière qui illumine mes journées et la force qui me pousse à être meilleur.</p>
+
+            <p>J'admire tellement tes passions : **ton talent pour le dessin, ton amour pour la lecture, ta capacité à écrire des livres, et ton goût pour la chanson.** J'aime aussi ta façon de cuisiner et **ton incroyable capacité à rendre chaque endroit où tu es chaleureux et accueillant.** Mais surtout, **la façon dont tu m'aimes et prends soin de moi** est ce qui me touche le plus.</p>
+
+            <p><strong>Je t'aime plus que les mots ne peuvent le dire, d'un amour profond, sincère et éternel.</strong> Chaque jour passé à tes côtés me confirme que tu es la seule femme avec qui je veux partager ma vie. **Si cette distance qui nous sépare n'existait pas, je te serrerais dans mes bras à cet instant même.**</p>
+
+            <p>**Mon plus grand désir est de tout faire pour toi, de te donner tout le bien du monde et de te rendre la femme la plus heureuse qui soit.** Mon cœur est à toi, et **je te jure que je ne te blesserai jamais.** Je rêve du jour où je pourrai te demander de devenir ma femme, pour toujours. Cette petite trace sur internet n'est qu'un minuscule reflet de l'immensité de mon amour pour toi. <i class='fas fa-sparkles'></i></p>
+        `;
+
+        // Fonction pour montrer/cacher les sections
+        function showSection(sectionToShow, showRestart = false) {
+            const sections = [question1Section, passwordSection, question2Section, finalMessageSection];
+            sections.forEach(section => {
+                if (section === sectionToShow) {
+                    section.classList.remove('hidden');
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                    section.classList.add('hidden');
+                }
+            });
+
+            if (showRestart) {
+                restartBtn.classList.remove('hidden');
+            } else {
+                restartBtn.classList.add('hidden');
+            }
         }
+
+        // --- Logique des boutons ---
+
+        btnYes1.addEventListener('click', () => {
+            showSection(passwordSection);
+            passwordInput.value = ''; // Réinitialise le champ du mot de passe
+        });
+
+        btnNo1.addEventListener('click', () => {
+            finalTextContent.innerHTML = "<i class='fas fa-frown'></i> Oh non... Dans ce cas, **casse-toi alors !** <i class='fas fa-sad-tear'></i>";
+            showSection(finalMessageSection, true);
+        });
+
+        btnSubmitPassword.addEventListener('click', () => {
+            if (passwordInput.value.trim() === correctPassword) {
+                showSection(question2Section);
+            } else {
+                finalTextContent.innerHTML = "<i class='fas fa-frown'></i> Mauvaise date... Dans ce cas, **casse-toi alors !** <i class='fas fa-sad-tear'></i>";
+                showSection(finalMessageSection, true);
+            }
+        });
+
+        btnYes2.addEventListener('click', () => {
+            finalTextContent.innerHTML = fullPositiveMessage; // Insère le message complet
+            showSection(finalMessageSection, true);
+        });
+
+        btnNo2.addEventListener('click', () => {
+            finalTextContent.innerHTML = "<i class='fas fa-frown'></i> C'est triste... Dans ce cas, **casse-toi alors !** <i class='fas fa-sad-tear'></i>";
+            showSection(finalMessageSection, true);
+        });
+
+        restartBtn.addEventListener('click', () => {
+            showSection(question1Section);
+        });
     </script>
 </body>
 </html>
