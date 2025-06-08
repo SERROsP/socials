@@ -110,7 +110,7 @@ body::before {
     position: relative;
     width: 90%;
     max-width: 600px;
-    min-height: 350px;
+    min-height: 350px; /* Hauteur minimale pour les cartes */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -127,7 +127,7 @@ body::before {
     transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.8s ease-out, visibility 0.8s ease-out;
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100%; /* La carte prend toute la hauteur disponible du conteneur */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -161,19 +161,6 @@ p {
     margin-top: 15px;
     font-weight: 500;
 }
-
-/* Styles pour le texte final du message d'amour */
-#final-text-content p {
-    font-size: 1.4em; /* Taille légèrement plus petite pour le long texte */
-    line-height: 1.7;
-    margin-bottom: 1.2em; /* Espace entre les paragraphes */
-    font-weight: 400;
-}
-
-#final-text-content p strong {
-    font-weight: 700;
-}
-
 
 .hint {
     font-size: 1em;
@@ -268,6 +255,57 @@ p {
     100% { transform: scale(1); }
 }
 
+/* Styles spécifiques pour le contenu défilable */
+#scrollable-content {
+    max-height: calc(100% - 100px); /* Ajuste selon la hauteur de la carte et les boutons/titres */
+    overflow-y: auto; /* Permet le défilement vertical si le contenu dépasse */
+    padding-right: 15px; /* Pour éviter que le texte ne touche la barre de défilement */
+    margin-bottom: 20px; /* Espace sous le texte avant le bouton Recommencer */
+    width: 100%; /* Prend toute la largeur disponible */
+    box-sizing: border-box;
+    display: flex; /* Utilise flexbox pour centrer le contenu interne */
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement le contenu si la largeur est suffisante */
+}
+
+/* Stylisation de la barre de défilement (WebKit - Chrome, Safari) */
+#scrollable-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#scrollable-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+#scrollable-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.7); /* Jaune doré semi-transparent */
+    border-radius: 10px;
+}
+
+#scrollable-content::-webkit-scrollbar-thumb:hover {
+    background: #FFD700; /* Jaune doré plein au survol */
+}
+
+/* Styles pour le texte final à l'intérieur de la zone défilable */
+#final-text-content {
+    /* Retrait du padding du p, déjà sur scrollable-content */
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Prend toute la largeur du conteneur défilable */
+    text-align: center; /* Assure que le texte est centré */
+}
+
+#final-text-content p {
+    font-size: 1.4em; /* Taille de base pour le long texte */
+    line-height: 1.7;
+    margin-bottom: 1.2em; /* Espace entre les paragraphes */
+    font-weight: 400;
+}
+
+#final-text-content p strong {
+    font-weight: 700;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -288,6 +326,10 @@ p {
     .container {
         min-height: 300px;
         width: 95%;
+    }
+    #scrollable-content {
+        max-height: calc(100% - 80px); /* Ajusté pour mobile/tablette */
+        padding-right: 10px;
     }
     #final-text-content p {
         font-size: 1.1em;
@@ -313,6 +355,10 @@ p {
     .password-input {
         width: 90%;
         font-size: 1em;
+    }
+    #scrollable-content {
+        max-height: calc(100% - 70px); /* Encore plus ajusté pour les très petits écrans */
+        padding-right: 8px;
     }
     #final-text-content p {
         font-size: 0.9em;
