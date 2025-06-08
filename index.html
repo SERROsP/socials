@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="hearts-background">
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+        <div class="heart"></div>
+    </div>
+
     <div class="container">
         <div id="question1-section" class="card active">
             <i class="fas fa-heart initial-heart"></i>
@@ -36,30 +49,21 @@
         </div>
 
         <div id="final-message-section" class="card hidden">
-            <p id="final-text-content"></p>
+            <div id="scrollable-content">
+                <p id="final-text-content"></p>
+            </div>
             <button id="restartBtn" class="btn hidden"><i class="fas fa-redo"></i> Recommencer</button>
         </div>
     </div>
 
-    <div class="hearts-background">
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-    </div>
-
     <script>
+        // Références aux éléments HTML
         const question1Section = document.getElementById('question1-section');
         const passwordSection = document.getElementById('password-section');
         const question2Section = document.getElementById('question2-section');
         const finalMessageSection = document.getElementById('final-message-section'); // Section finale unique
         const finalTextContent = document.getElementById('final-text-content'); // Contenu du texte final
+        const scrollableContent = document.getElementById('scrollable-content'); // Le conteneur défilable
         const restartBtn = document.getElementById('restartBtn');
 
         const btnYes1 = document.getElementById('btnYes1');
@@ -71,7 +75,7 @@
 
         const correctPassword = "22/10/2007"; // Le mot de passe attendu
 
-        // Le texte d'amour complet que tu as fourni
+        // Message d'amour complet
         const fullPositiveMessage = `
             <i class='fas fa-heartbeat heart-beat'></i> 
             <p><strong>Mon amour, ma Sarah, depuis le jour où nos chemins se sont croisés, chaque instant avec toi est un pur bonheur.</strong> Tu es la lumière qui illumine mes journées et la force qui me pousse à être meilleur.</p>
@@ -83,7 +87,7 @@
             <p>**Mon plus grand désir est de tout faire pour toi, de te donner tout le bien du monde et de te rendre la femme la plus heureuse qui soit.** Mon cœur est à toi, et **je te jure que je ne te blesserai jamais.** Je rêve du jour où je pourrai te demander de devenir ma femme, pour toujours. Cette petite trace sur internet n'est qu'un minuscule reflet de l'immensité de mon amour pour toi. <i class='fas fa-sparkles'></i></p>
         `;
 
-        // Fonction pour montrer/cacher les sections
+        // Fonction pour afficher une section et cacher les autres
         function showSection(sectionToShow, showRestart = false) {
             const sections = [question1Section, passwordSection, question2Section, finalMessageSection];
             sections.forEach(section => {
@@ -101,9 +105,13 @@
             } else {
                 restartBtn.classList.add('hidden');
             }
+            // Réinitialiser le défilement au sommet si la section est la section finale
+            if (sectionToShow === finalMessageSection) {
+                scrollableContent.scrollTop = 0; // Remonte le défilement au début
+            }
         }
 
-        // --- Logique des boutons ---
+        // --- Logique des événements (clics de bouton) ---
 
         btnYes1.addEventListener('click', () => {
             showSection(passwordSection);
